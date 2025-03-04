@@ -1,26 +1,19 @@
 import { useMutation } from "@tanstack/react-query";
 import api from "../services/apiService";
 import useAuthStore from "../store/authStore";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const BASE_URL = "Users";
 
 // Sign in hook with Zustand integration
 export const useSignIn = () => {
-  const { setUser, setError, setLoading, clearError } = useAuthStore();
-  
+  const { setUser } = useAuthStore();
+
   return useMutation({
     mutationFn: async (credentials) => {
-      setLoading(true);
-      clearError();
-      try {
-        const response = await api.post(`${BASE_URL}/signIn`, credentials);
-        return response.data;
-      } catch (error) {
-        setError(error.response?.data?.message || "Login failed");
-        throw error;
-      } finally {
-        setLoading(false);
-      }
+      const response = await api.post(`${BASE_URL}/signIn`, credentials);
+      return response.data;
     },
     onSuccess: (data) => {
       setUser(data);
@@ -31,21 +24,12 @@ export const useSignIn = () => {
 
 // Register hook with Zustand integration
 export const useRegister = () => {
-  const { setUser, setError, setLoading, clearError } = useAuthStore();
+  const { setUser } = useAuthStore();
 
   return useMutation({
     mutationFn: async (credentials) => {
-      setLoading(true);
-      clearError();
-      try {
-        const response = await api.post(`${BASE_URL}/signUp`, credentials);
-        return response.data;
-      } catch (error) {
-        setError(error.response?.data?.message || "Registration failed");
-        throw error;
-      } finally {
-        setLoading(false);
-      }
+      const response = await api.post(`${BASE_URL}/signUp`, credentials);
+      return response.data;
     },
     onSuccess: (data) => {
       setUser(data);
@@ -66,22 +50,33 @@ export const useLastView = () => {
 
 // Check if user is authenticated
 export const useCheckAuth = () => {
-  const { isLoggedIn, token } = useAuthStore();
-  
+  const { token, username, email } = useAuthStore();
+
   return {
-    isAuthenticated: isLoggedIn && !!token,
-    token
+    isAuthenticated: !!token,
+    username,
+    email,
   };
 };
 
 // Logout hook
 export const useLogout = () => {
   const logout = useAuthStore((state) => state.logout);
-  
+
   return () => {
     localStorage.removeItem("token");
     logout();
   };
+};
+
+export const useRedirectToDashboard = () => {
+  const { isAuthenticated } = useCheckAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
 };
 
 export default {
@@ -90,4 +85,5 @@ export default {
   useLastView,
   useCheckAuth,
   useLogout,
+  useRedirectToDashboard,
 };

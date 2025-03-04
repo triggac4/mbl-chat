@@ -1,12 +1,13 @@
-import React from 'react';
+import "react";
+import PropTypes from "prop-types";
 
-const FormContainer = ({ 
-  children, 
-  title, 
-  subtitle = "", 
-  icon: Icon = null, 
+const FormContainer = ({
+  children,
+  title,
+  subtitle = "",
+  icon: Icon = null,
   error = null,
-  onSubmit 
+  onSubmit,
 }) => {
   return (
     <div className="min-h-[calc(100vh-136px)] flex items-center justify-center">
@@ -29,6 +30,14 @@ const FormContainer = ({
       </div>
     </div>
   );
+};
+FormContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+  title: PropTypes.string.isRequired,
+  subtitle: PropTypes.string,
+  icon: PropTypes.elementType,
+  error: PropTypes.string,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default FormContainer;

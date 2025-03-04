@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { FaUserPlus } from "react-icons/fa";
-import { useRegister } from "../../hooks/useAuth";
+import { useRedirectToDashboard, useRegister } from "../../hooks/useAuth";
 import useAuthStore from "../../store/authStore";
 
 // UI Components
@@ -18,7 +18,8 @@ const RegisterForm = () => {
   });
 
   const [passwordError, setPasswordError] = useState("");
-  const navigate = useNavigate();
+  useRedirectToDashboard();
+
   const { mutateAsync, isPending } = useRegister();
   const error = useAuthStore((state) => state.error);
 
@@ -45,9 +46,9 @@ const RegisterForm = () => {
 
     try {
       // Remove confirmPassword before sending to server
-      const { confirmPassword, ...userData } = formData;
-      await mutateAsync(userData);
-      navigate("/");
+      // const { confirmPassword, ...userData } = formData;
+      await mutateAsync(formData);
+      // navigate("/");
     } catch (error) {
       console.error("Registration failed:", error);
     }

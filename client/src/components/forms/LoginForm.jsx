@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { FaSignInAlt } from "react-icons/fa";
-import { useSignIn } from "../../hooks/useAuth";
+import { useRedirectToDashboard, useSignIn } from "../../hooks/useAuth";
 import useAuthStore from "../../store/authStore";
 
 // UI Components
@@ -15,7 +15,7 @@ const LoginForm = () => {
     password: "",
   });
   
-  const navigate = useNavigate();
+  useRedirectToDashboard();
   const { mutateAsync, isPending } = useSignIn();
   const error = useAuthStore((state) => state.error);
 
@@ -28,19 +28,18 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       await mutateAsync(formData);
-      navigate("/");
     } catch (error) {
       console.error("Login failed:", error);
     }
   };
 
   return (
-    <FormContainer 
-      title="Welcome Back" 
-      subtitle="Sign in to your account" 
+    <FormContainer
+      title="Welcome Back"
+      subtitle="Sign in to your account"
       icon={FaSignInAlt}
       error={error}
       onSubmit={handleSubmit}
@@ -67,17 +66,13 @@ const LoginForm = () => {
         required
       />
 
-      <Button 
-        type="submit" 
-        className="w-full" 
-        isLoading={isPending}
-      >
+      <Button type="submit" className="w-full" isLoading={isPending}>
         Sign In
       </Button>
 
       <div className="mt-6 text-center">
         <p className="text-gray-600">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link
             to="/register"
             className="text-blue-600 hover:text-blue-700 font-medium"

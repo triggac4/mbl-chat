@@ -1,42 +1,34 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 const useAuthStore = create(
   persist(
     (set) => ({
-      user: null,
+      username: null,
       token: null,
-      isLoggedIn: false,
-      isLoading: false,
+      email: false,
       error: null,
-      
+
       // Set user after successful login/registration
-      setUser: (userData) => set({
-        user: userData.user,
-        token: userData.token,
-        isLoggedIn: true,
-        error: null
-      }),
-      
+      setUser: (userData) =>
+        set({
+          username: userData.username,
+          token: userData.token,
+          email: userData.email,
+          error: null,
+        }),
+
       // Clear user data on logout
-      logout: () => set({
-        user: null,
-        token: null,
-        isLoggedIn: false,
-        error: null
-      }),
-      
-      // Set errors
-      setError: (error) => set({ error }),
-      
-      // Set loading state
-      setLoading: (isLoading) => set({ isLoading }),
-      
-      // Reset errors
-      clearError: () => set({ error: null }),
+      logout: () =>
+        set({
+          username: null,
+          token: null,
+          email: false,
+          error: null,
+        }),
     }),
     {
-      name: 'auth-storage', // name of the item in localStorage
+      name: "auth-storage", // name of the item in localStorage
     }
   )
 );

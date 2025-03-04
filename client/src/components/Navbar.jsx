@@ -1,27 +1,29 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { logout } from '../services/authService';
-import { FaSignOutAlt, FaUserCircle, FaComments } from 'react-icons/fa';
+import { Link, useNavigate } from "react-router-dom";
+import { FaSignOutAlt, FaUserCircle, FaComments } from "react-icons/fa";
+import { useCheckAuth, useLogout } from "../hooks/useAuth";
 
-const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
+const Navbar = () => {
   const navigate = useNavigate();
-  
+  const { isAuthenticated, username } = useCheckAuth();
+  const logout = useLogout();
   const handleLogout = () => {
     logout();
-    setIsLoggedIn(false);
-    navigate('/login');
+    navigate("/login");
   };
-  
+
   return (
     <nav className="bg-white border-b shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">
             <img src="/src/assets/logo.svg" alt="Logo" className="h-8 w-8" />
-            <span className="text-xl font-bold text-gray-800">MessagingApp</span>
+            <span className="text-xl font-bold text-gray-800">
+              MessagingApp
+            </span>
           </Link>
-          
+
           <div className="flex items-center space-x-4">
-            {isLoggedIn ? (
+            {isAuthenticated ? (
               <>
                 <Link
                   to="/"
@@ -30,15 +32,15 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                   <FaComments />
                   <span>Messages</span>
                 </Link>
-                
+
                 <Link
                   to="/profile"
                   className="text-gray-600 hover:text-blue-600 flex items-center space-x-1"
                 >
                   <FaUserCircle />
-                  <span>Profile</span>
+                  <span>{username}</span>
                 </Link>
-                
+
                 <button
                   onClick={handleLogout}
                   className="flex items-center space-x-1 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"

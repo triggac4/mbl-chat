@@ -10,20 +10,12 @@ import { useCheckAuth } from "./hooks/useAuth";
 import './App.css';
 
 // Create a React Query client
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: false,
-    },
-  },
-});
+
 
 function App() {
   const { isAuthenticated } = useCheckAuth();
 
   return (
-    <QueryClientProvider client={queryClient}>
       <Router>
         <div className="min-h-screen bg-gray-50">
           <Navbar />
@@ -46,7 +38,6 @@ function App() {
           </div>
         </div>
       </Router>
-    </QueryClientProvider>
   );
 }
 
