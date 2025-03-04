@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Button = ({ 
   children, 
@@ -33,6 +34,14 @@ const Button = ({
       )}
     </button>
   );
+};
+Button.propTypes = {
+  children: PropTypes.node,
+  type: PropTypes.string,
+  className: PropTypes.string,
+  disabled: PropTypes.bool,
+  isLoading: PropTypes.bool,
+  onClick: PropTypes.func,
 };
 
 export default Button;
