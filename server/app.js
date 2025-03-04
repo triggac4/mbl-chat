@@ -3,12 +3,11 @@ import cors from "cors";
 import rateLimit from "express-rate-limit";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-import error from "express-async-errors";
-// // Import routes
-// import authRoutes from "./routes/authRoutes.js";
-// import userRoutes from "./routes/userRoutes.js";
-// import roomRoutes from "./routes/roomRoutes.js";
-// import messageRoutes from "./routes/messageRoutes.js";
+import "express-async-errors";
+
+// Import routes
+import userRoutes from "./routes/user.route.js";
+import messageRoutes from "./routes/message.route.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 // Initialize express app
@@ -49,9 +48,8 @@ app.use(limiter);
 
 // Routes
 // app.use("/api/auth", authRoutes);
-// app.use("/api/users", userRoutes);
-// app.use("/api/rooms", roomRoutes);
-// app.use("/api/messages", messageRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/messages", messageRoutes);
 
 // Swagger documentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));

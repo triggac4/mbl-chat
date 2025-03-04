@@ -3,8 +3,6 @@ import http from "http";
 import { Server } from "socket.io";
 import app from "./app.js";
 import connectDB from "./config/db.js";
-import Message from "./models/messageModel.js";
-import Room from "./models/roomModel.js";
 
 // Load environment variables
 dotenv.config();

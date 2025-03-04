@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
+import User from "./userModel.js";
 
 const messageSchema = new mongoose.Schema(
   {
     sender: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: User.modelName,
       required: true,
     },
     content: {
@@ -12,17 +13,11 @@ const messageSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
-    room: {
+    receiver: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Room",
+      ref: User.modelName,
       required: true,
     },
-    readBy: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
   },
   { timestamps: true }
 );

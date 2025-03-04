@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "", // Default profile picture URL could go here
     },
+    lastMessagesView: {
+      type: Date,
+      default: Date.now,
+    },
   },
   { timestamps: true }
 );
@@ -44,7 +48,7 @@ userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     return next();
   }
-  
+
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
@@ -55,21 +59,21 @@ userSchema.pre("save", async function (next) {
 });
 
 // Method to compare password
-userSchema.methods.comparePassword = async function(candidatePassword) {
+userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
 // Create admin user if none exists
-userSchema.statics.createAdminUser = async function() {
+userSchema.statics.createAdminUser = async function () {
   try {
     const adminCount = await this.countDocuments({ role: "admin" });
-    
+
     if (adminCount === 0) {
       await this.create({
         username: "admin",
         email: "admin@example.com",
         password: "adminPassword123", // This will be hashed by the pre-save hook
-        role: "admin"
+        role: "admin",
       });
       console.log("Admin user created successfully");
     }

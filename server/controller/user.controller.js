@@ -1,8 +1,8 @@
 //user controller,.. sign in sign up
+
 import User from "../models/userModel.js";
 import { generateToken } from "../utils/tokenUtil.js";
-import asyncHandler from "express-async-handler";
-
+ 
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -34,12 +34,13 @@ const registerUser = async (req, res) => {
   }
 };
 //sign in
-const loginUser = asyncHandler(async (req, res) => {
+const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
+  const passwordMatch = await user.comparePassword(password);
   //password verify
-  if (user && (await user.matchPassword(password))) {
+  if (user && passwordMatch) {
     const token = generateToken(user._id);
 
     res.json({
@@ -52,5 +53,12 @@ const loginUser = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Invalid email or password");
   }
-});
-export { registerUser, loginUser };
+};
+
+const updateLastViewMessages = async (req, res) => {
+  const user = req.user;
+  user.lastMessagesView = Date.now();
+  await user.save();
+  res.status(200).json({ message: "Last messages view updated" });
+};
+export { registerUser, loginUser, updateLastViewMessages };
