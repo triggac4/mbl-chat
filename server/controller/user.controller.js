@@ -2,10 +2,10 @@
 
 import User from "../models/userModel.js";
 import { generateToken } from "../utils/tokenUtil.js";
- 
-const registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
 
+const registerUser = async (req, res) => {
+  const { username, email, password } = req.body;
+console.log(req.body)
   const userExists = await User.findOne({ email });
 
   if (userExists) {
@@ -14,7 +14,7 @@ const registerUser = async (req, res) => {
   }
 
   const user = await User.create({
-    name,
+    username,
     email,
     password,
   });
@@ -24,7 +24,7 @@ const registerUser = async (req, res) => {
 
     res.status(201).json({
       _id: user._id,
-      name: user.name,
+      user: user.username,
       email: user.email,
       token,
     });
@@ -36,8 +36,8 @@ const registerUser = async (req, res) => {
 //sign in
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
+  const user = await User.findOne({ email }).select("+password");
 
-  const user = await User.findOne({ email });
   const passwordMatch = await user.comparePassword(password);
   //password verify
   if (user && passwordMatch) {
@@ -45,7 +45,7 @@ const loginUser = async (req, res) => {
 
     res.json({
       _id: user._id,
-      name: user.name,
+      username: user.username,
       email: user.email,
       token,
     });
