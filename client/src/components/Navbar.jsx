@@ -1,0 +1,73 @@
+import { Link, useNavigate } from 'react-router-dom';
+import { logout } from '../services/authService';
+import { FaSignOutAlt, FaUserCircle, FaComments } from 'react-icons/fa';
+
+const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
+  const navigate = useNavigate();
+  
+  const handleLogout = () => {
+    logout();
+    setIsLoggedIn(false);
+    navigate('/login');
+  };
+  
+  return (
+    <nav className="bg-white border-b shadow-sm">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center h-16">
+          <Link to="/" className="flex items-center space-x-2">
+            <img src="/src/assets/logo.svg" alt="Logo" className="h-8 w-8" />
+            <span className="text-xl font-bold text-gray-800">MessagingApp</span>
+          </Link>
+          
+          <div className="flex items-center space-x-4">
+            {isLoggedIn ? (
+              <>
+                <Link
+                  to="/"
+                  className="text-gray-600 hover:text-blue-600 flex items-center space-x-1"
+                >
+                  <FaComments />
+                  <span>Messages</span>
+                </Link>
+                
+                <Link
+                  to="/profile"
+                  className="text-gray-600 hover:text-blue-600 flex items-center space-x-1"
+                >
+                  <FaUserCircle />
+                  <span>Profile</span>
+                </Link>
+                
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center space-x-1 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                >
+                  <FaSignOutAlt />
+                  <span>Logout</span>
+                </button>
+              </>
+            ) : (
+              <div className="space-x-4">
+                <Link
+                  to="/login"
+                  className="px-4 py-2 text-blue-600 hover:text-blue-700"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/register"
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
