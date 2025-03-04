@@ -3,12 +3,12 @@ import cors from "cors";
 import rateLimit from "express-rate-limit";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-
+import error from "express-async-errors";
 // // Import routes
-import authRoutes from "./routes/authRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
-import roomRoutes from "./routes/roomRoutes.js";
-import messageRoutes from "./routes/messageRoutes.js";
+// import authRoutes from "./routes/authRoutes.js";
+// import userRoutes from "./routes/userRoutes.js";
+// import roomRoutes from "./routes/roomRoutes.js";
+// import messageRoutes from "./routes/messageRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 // Initialize express app
@@ -18,7 +18,7 @@ const app = express();
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // Limit each IP to 100 requests per windowMs
-  message: "Too many requests, please try again later."
+  message: "Too many requests, please try again later.",
 });
 
 // Swagger configuration
@@ -28,15 +28,15 @@ const swaggerOptions = {
     info: {
       title: "Messaging App API",
       version: "1.0.0",
-      description: "API for messaging application"
+      description: "API for messaging application",
     },
     servers: [
       {
-        url: "http://localhost:5000"
-      }
-    ]
+        url: "http://localhost:5000",
+      },
+    ],
   },
-  apis: ["./routes/*.js"]
+  apis: ["./routes/*.js"],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
