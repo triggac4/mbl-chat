@@ -11,15 +11,21 @@ export const useSendMessage = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["messages"] });
+      queryClient.invalidateQueries({ queryKey: ["unreadCount"] });
     },
   });
 };
 export const useGetMessages = () => {
+  const queryClient = useQueryClient();
+
   return useQuery({
     queryKey: ["messages"],
     queryFn: async () => {
       const response = await api.get(`${url}`);
       return response.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["unreadCount"] });
     },
   });
 };
