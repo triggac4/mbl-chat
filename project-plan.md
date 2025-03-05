@@ -59,12 +59,10 @@ We'll create a full-stack application with:
    - Navigation bar with login/logout
    - Authentication forms
    - Messaging interface
-   - User profile components
 
 3. Implement state management:
    - Authentication state
    - Messages/conversations state
-   - User management
 
 4. Connect to backend API:
    - Authentication service
