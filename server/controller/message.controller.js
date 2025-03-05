@@ -29,7 +29,9 @@ const createMessage = async (req, res) => {
     forAll: !email,
   });
   await User.findByIdAndUpdate(user._id, { lastMessagesView: Date.now() });
-  IO.sockets.emit("newMessage", newMessage);
+  const doc = newMessage.toObject();
+  doc.sender = user;
+  IO.sockets.emit("newMessage", doc);
   res.status(201).json({ newMessage });
 };
 
