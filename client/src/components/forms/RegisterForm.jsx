@@ -8,6 +8,7 @@ import useAuthStore from "../../store/authStore";
 import FormContainer from "./FormContainer";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
+import { errorFormatter } from "../../services/formatters";
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -20,8 +21,8 @@ const RegisterForm = () => {
   const [passwordError, setPasswordError] = useState("");
   useRedirectToDashboard();
 
-  const { mutateAsync, isPending } = useRegister();
-  const error = useAuthStore((state) => state.error);
+  const { mutateAsync, isPending, error } = useRegister();
+  // const error = useAuthStore((state) => state.error);
 
   const handleChange = (e) => {
     setFormData({
@@ -59,7 +60,7 @@ const RegisterForm = () => {
       title="Create Account"
       subtitle="Join our messaging platform"
       icon={FaUserPlus}
-      error={error}
+      error={errorFormatter(error)}
       onSubmit={handleSubmit}
     >
       <Input

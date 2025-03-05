@@ -2,22 +2,22 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaSignInAlt } from "react-icons/fa";
 import { useRedirectToDashboard, useSignIn } from "../../hooks/useAuth";
-import useAuthStore from "../../store/authStore";
+// import useAuthStore from "../../store/authStore";
 
 // UI Components
 import FormContainer from "./FormContainer";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
+import { errorFormatter } from "../../services/formatters";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  
+
   useRedirectToDashboard();
-  const { mutateAsync, isPending } = useSignIn();
-  const error = useAuthStore((state) => state.error);
+  const { mutateAsync, isPending, error } = useSignIn();
 
   const handleChange = (e) => {
     setFormData({
@@ -41,7 +41,7 @@ const LoginForm = () => {
       title="Welcome Back"
       subtitle="Sign in to your account"
       icon={FaSignInAlt}
-      error={error}
+      error={errorFormatter(error)}
       onSubmit={handleSubmit}
     >
       <Input

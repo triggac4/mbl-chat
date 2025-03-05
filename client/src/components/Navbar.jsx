@@ -31,7 +31,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">
-            <img src="/src/assets/logo.svg" alt="Logo" className="h-8 w-8" />
+            <img src="/logo.svg" alt="Logo" className="h-8 w-8" />
             <span className="text-xl font-bold text-gray-800 hidden md:inline">
               MessagingApp
             </span>
