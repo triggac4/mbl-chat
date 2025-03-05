@@ -13,6 +13,9 @@ import { errorHandler } from "./middleware/errorMiddleware.js";
 // Initialize express app
 const app = express();
 
+// Import Swagger documentation
+import { swaggerDocs } from './swagger.js';
+
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
@@ -38,7 +41,7 @@ const swaggerOptions = {
   apis: ["./routes/*.js"],
 };
 
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
+// const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 // Middleware
 app.use(express.json());
@@ -51,8 +54,11 @@ app.use(limiter);
 app.use("/api/users", userRoutes);
 app.use("/api/messages", messageRoutes);
 
+// Initialize Swagger documentation
+swaggerDocs(app);
+
 // Swagger documentation
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Base route
 app.get("/", (req, res) => {
