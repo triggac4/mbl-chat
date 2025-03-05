@@ -1,14 +1,14 @@
 import {
   createMessage,
   getAllMessages,
-  getAllUnreadMessages,
+  getAllUnreadMessageCount,
 } from "../controller/message.controller.js";
 import { protect } from "../middleware/authMiddleware.js";
 import express from "express";
 
 const router = express.Router();
 
-router.route("/").post(createMessage).get(protect, getAllMessages);
-router.get("/unread", protect, getAllUnreadMessages);
+router.route("/").post(protect, createMessage).get(protect, getAllMessages);
+router.get("/unreadCount", protect, getAllUnreadMessageCount);
 
 export default router;

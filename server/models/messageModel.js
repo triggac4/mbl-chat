@@ -16,12 +16,20 @@ const messageSchema = new mongoose.Schema(
     receiver: {
       type: mongoose.Schema.Types.ObjectId,
       ref: User.modelName,
-      required: true,
+    },
+    forAll: {
+      type: Boolean,
+      default: true,
     },
   },
   { timestamps: true }
 );
 
+// Auto-populate user details on queries
+messageSchema.pre(/^find/, function (next) {
+  this.populate("sender");
+  next();
+});
 const Message = mongoose.model("Message", messageSchema);
 
 export default Message;

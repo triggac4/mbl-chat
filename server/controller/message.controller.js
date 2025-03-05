@@ -7,41 +7,54 @@ import User from "../models/userModel.js";
 const createMessage = async (req, res) => {
   const { message, email } = req.body;
   const { user } = req;
-  const receiver = await User.findOne({ email });
-  if (!receiver) {
-    res.status(404);
-    throw new Error("Room not found");
+  const IO = req.app.get("IO");
+  let receiver;
+  if (email) {
+    receiver = await User.findOne({ email });
+
+    if (!receiver) {
+      res.status(404);
+      throw new Error("Room not found");
+    }
+
+    if (receiver._id.equals(user._id)) {
+      res.status(400);
+      throw new Error("You cannot send a message to yourself");
+    }
   }
-  if (receiver._id.equals(user._id)) {
-    res.status(400);
-    throw new Error("You cannot send a message to yourself");
-  }
-  const newMessage = Message.create({
+  const newMessage = await Message.create({
     sender: user._id,
     content: message,
-    receiver: receiver._id,
+    receiver: receiver?._id,
+    forAll: !email,
   });
-  res.status(201).json(newMessage);
-  console.log(newMessage);
-  console.log(user);
+  await User.findByIdAndUpdate(user._id, { lastMessagesView: Date.now() });
+  IO.sockets.emit("newMessage", newMessage);
+  res.status(201).json({ newMessage });
 };
 
 const getAllMessages = async (req, res) => {
   const user = req.user;
 
   const messages = await Message.find({
-    $or: [{ receiver: user._id }, { sender: user._id }],
-  });
-  res.status(200).json(messages);
+    $or: [{ receiver: user._id }, { sender: user._id }, { forAll: true }],
+  }).populate("sender");
+  await User.findByIdAndUpdate(user._id, { lastMessagesView: Date.now() });
+  res.status(200).json({ messages });
 };
 
-const getAllUnreadMessages = async (req, res) => {
+const getAllUnreadMessageCount = async (req, res) => {
   const user = req.user;
 
   const messages = await Message.find({
-    receiver: user._id,
-    createdAt: { $gt: user.lastMessagesView },
-  });
+    $and: [
+      {
+        createdAt: { $gt: user.lastMessagesView },
+      },
+      { $or: [{ receiver: user._id }, { sender: user._id }, { forAll: true }] },
+    ],
+  }).countDocuments();
+  res.status(200).json({ unreadMessageCount: messages });
 };
 
-export { createMessage, getAllMessages, getAllUnreadMessages };
+export { createMessage, getAllMessages, getAllUnreadMessageCount };
