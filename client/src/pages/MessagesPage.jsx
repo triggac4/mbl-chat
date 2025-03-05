@@ -40,12 +40,15 @@ const MessagesPage = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
-      <header className="bg-white shadow p-4">
+    <div
+      className="flex flex-col bg-gray-100 mb-3"
+      style={{ height: "calc(100vh - 4rem)" }}
+    >
+      <header className="bg-white shadow p-4 h-6">
         <h1 className="text-xl font-semibold text-gray-800">Messages</h1>
       </header>
 
-      <div className="flex flex-col flex-1 overflow-hidden">
+      <div className="flex flex-col flex-1 overflow-hidden ">
         {/* Using the reusable MessageList component */}
         <MessageList messages={messages} isLoading={messageLoading} />
 

@@ -27,7 +27,7 @@ const Navbar = () => {
     dependency: [onNewMessageCallback],
   });
   return (
-    <nav className="bg-white border-b shadow-sm">
+    <nav className="bg-white border-b shadow-sm fixed top-0 left-0 right-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">
@@ -41,7 +41,7 @@ const Navbar = () => {
             {isAuthenticated ? (
               <>
                 <Link
-                  to="/"
+                  to="/messages"
                   className="text-gray-600 hover:text-blue-600 flex items-center space-x-1"
                 >
                   <FaComments />

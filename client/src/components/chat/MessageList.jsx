@@ -1,12 +1,9 @@
-import { useRef, useEffect, useMemo, useState } from "react";
-import PropTypes from 'prop-types';
-import { useGetMessages } from "../../hooks/useMessages";
+import { useRef, useEffect, useMemo } from "react";
+import PropTypes from "prop-types";
 import { CircleSpinner } from "../ui/Loading";
 import { MessageComponent } from "./MessageComponent";
-import { useSocketConnection } from "../../hooks/useSockets";
-import { useQueryClient } from "@tanstack/react-query";
 
-const MessageList = ({ messages=[], isLoading }) => {
+const MessageList = ({ messages = [], isLoading }) => {
   const messagesEndRef = useRef(null);
   const messagesData = useMemo(() => {
     // const messages = data?.messages || [];
@@ -20,7 +17,7 @@ const MessageList = ({ messages=[], isLoading }) => {
   }, [messages]);
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 space-y-4">
+    <div className="flex-1 overflow-y-auto p-4 space-y-4 pt-7">
       {isLoading && <CircleSpinner size="100px" />}
       {messagesData}
       <div ref={messagesEndRef} />

@@ -18,7 +18,7 @@ function App() {
     <Router>
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <div className="container mx-auto px-4 py-6">
+        <div className="container mx-auto md:px-4">
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
