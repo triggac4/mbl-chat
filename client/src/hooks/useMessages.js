@@ -3,14 +3,11 @@ import api from "../services/apiService";
 
 const url = "messages";
 export const useSendMessage = () => {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (message) => {
       const response = await api.post(`${url}`, message);
       return response.data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["messages"] });
     },
   });
 };
@@ -21,10 +18,8 @@ export const useGetMessages = () => {
     queryKey: ["messages"],
     queryFn: async () => {
       const response = await api.get(`${url}`);
-      return response.data;
-    },
-    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["unreadCount"] });
+      return response.data;
     },
   });
 };

@@ -1,22 +1,30 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaSignOutAlt, FaUserCircle, FaComments } from "react-icons/fa";
 import { useCheckAuth, useLogout } from "../hooks/useAuth";
 import { useGetUnreadMessageCount } from "../hooks/useMessages";
 import { useSocketConnection } from "../hooks/useSockets";
+import { useCallback } from "react";
 const Navbar = () => {
   const navigate = useNavigate();
   const { isAuthenticated, username } = useCheckAuth();
   const logout = useLogout();
+  const location = useLocation();
   const { data, refetch } = useGetUnreadMessageCount();
   const handleLogout = () => {
     logout();
     navigate("/login");
   };
 
-  useSocketConnection({
-    onNewMessage: () => {
+  const onNewMessageCallback = useCallback(() => {
+    const isMessages = location.pathname === "/messages";
+    console.log({ isMessages, location });
+    if (!isMessages) {
       refetch();
-    },
+    }
+  }, [location, refetch]);
+  useSocketConnection({
+    onNewMessage: onNewMessageCallback,
+    dependency: [onNewMessageCallback],
   });
   return (
     <nav className="bg-white border-b shadow-sm">
@@ -39,7 +47,7 @@ const Navbar = () => {
                   <FaComments />
 
                   <span>Messages</span>
-                  {data?.unreadMessageCount && (
+                  {!!data?.unreadMessageCount && (
                     <span className="bg-red-500 text-white rounded-full px-2 py-1 text-xs">
                       {data?.unreadMessageCount}
                     </span>

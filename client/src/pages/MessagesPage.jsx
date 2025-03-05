@@ -1,23 +1,34 @@
 import "react";
-import { useCheckAuth } from "../hooks/useAuth";
+// import { useCheckAuth } from "../hooks/useAuth";
 
 // Import the reusable components
 import MessageList from "../components/chat/MessageList";
 import MessageInput from "../components/chat/MessageInput";
-import { useSendMessage } from "../hooks/useMessages";
+import { useGetMessages, useSendMessage } from "../hooks/useMessages";
+import { useEffect, useState } from "react";
 import { useSocketConnection } from "../hooks/useSockets";
-import { useQueryClient } from "@tanstack/react-query";
-
 const MessagesPage = () => {
-  const { email } = useCheckAuth();
   const { mutateAsync, isLoading } = useSendMessage();
-  const queryClient = useQueryClient();
+
+  // const queryClient = useQueryClient();
+
+  const [messages, setMessages] = useState([]);
+  const { data, isLoading: messageLoading } = useGetMessages();
+
+  // console.log({ data, isPending });
+
   useSocketConnection({
-    onNewMessage: () => {
-      queryClient.invalidateQueries(["messages"]);
+    onNewMessage: (msg) => {
+      // refetch();
+      setMessages((pre) => [...pre, msg]);
     },
   });
 
+  useEffect(() => {
+    if (!isLoading) {
+      setMessages(data?.messages || []);
+    }
+  }, [data?.messages, isLoading]);
   // Function to handle sending a new message
   const handleSendNewMessage = async (messageContent, email) => {
     const newMessage = {
@@ -36,7 +47,7 @@ const MessagesPage = () => {
 
       <div className="flex flex-col flex-1 overflow-hidden">
         {/* Using the reusable MessageList component */}
-        <MessageList currentUserEmail={email} />
+        <MessageList messages={messages} isLoading={messageLoading} />
 
         {/* Using the reusable MessageInput component */}
         <MessageInput
