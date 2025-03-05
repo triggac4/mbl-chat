@@ -11,7 +11,6 @@ export const useSendMessage = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["messages"] });
-      queryClient.invalidateQueries({ queryKey: ["unreadCount"] });
     },
   });
 };
@@ -24,7 +23,7 @@ export const useGetMessages = () => {
       const response = await api.get(`${url}`);
       return response.data;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["unreadCount"] });
     },
   });
