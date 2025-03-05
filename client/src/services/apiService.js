@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getAuthHeader } from './authService';
+import useAuthStore from '../store/authStore';
 
 const API_URL = 'http://localhost:5000/api';
 
@@ -29,6 +30,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       // Token expired or invalid
       localStorage.removeItem('user');
+      useAuthStore.getState().logout()
       window.location.href = '/login';
     }
     return Promise.reject(error);

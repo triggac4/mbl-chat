@@ -1,61 +1,49 @@
-import { useEffect, useRef } from "react";
-// import { getCurrentUser } from "../services/authService";
-// import { getUserRooms, createRoom } from '../services/roomService';
-// import { getRoomMessages, sendMessage, markMessagesAsRead } from '../services/messageService';
-// import { searchUsers } from '../services/userService';
-import { io } from "socket.io-client";
-import {
-  FaSearch,
-  FaUserPlus,
-  FaPaperPlane,
-  FaEllipsisV,
-  FaTimes,
-} from "react-icons/fa";
+import "react";
 import { useCheckAuth } from "../hooks/useAuth";
-import Button from "../components/ui/Button";
-import { useNavigate } from "react-router-dom";
+
+// Import the reusable components
+import MessageList from "../components/chat/MessageList";
+import MessageInput from "../components/chat/MessageInput";
+import { useSendMessage } from "../hooks/useMessages";
+import { useSocketConnection } from "../hooks/useSockets";
+import { useQueryClient } from "@tanstack/react-query";
 
 const MessagesPage = () => {
-  const socket = useRef();
   const { email } = useCheckAuth();
-  const navigate = useNavigate();
+  const { mutateAsync, isLoading } = useSendMessage();
+  const queryClient = useQueryClient();
+  useSocketConnection({
+    onNewMessage: () => {
+      queryClient.invalidateQueries(["messages"]);
+    },
+  });
 
-  useEffect(() => {
-    // Connect to socket server
-    socket.current = io("http://localhost:5000");
-
-    // Setup socket connection
-    if (email) {
-      socket.current.on(`${email}`, ({ room, latestMessage }) => {});
-    }
-
-    return () => {
-      if (socket.current) {
-        socket.current.disconnect();
-      }
+  // Function to handle sending a new message
+  const handleSendNewMessage = async (messageContent, email) => {
+    const newMessage = {
+      message: messageContent,
+      email,
     };
-  }, [email]);
 
-  // style the dashboard page and then create a button to take them to messages
+    await mutateAsync(newMessage);
+  };
+
   return (
-    <div className="flex flex-col h-screen justify-center">
+    <div className="flex flex-col h-screen bg-gray-100">
       <header className="bg-white shadow p-4">
         <h1 className="text-xl font-semibold text-gray-800">Messages</h1>
       </header>
-      <div className=" rounded-lg p-4 mb-4">
-        <h2 className="text-lg font-semibold mb-2">Welcome to your messages</h2>
-        <p className="text-gray-600">All Your Messages Appear Here</p>
+
+      <div className="flex flex-col flex-1 overflow-hidden">
+        {/* Using the reusable MessageList component */}
+        <MessageList currentUserEmail={email} />
+
+        {/* Using the reusable MessageInput component */}
+        <MessageInput
+          onSendMessage={handleSendNewMessage}
+          isLoading={isLoading}
+        />
       </div>
-      <main className="flex-1 p-4">
-        <Button
-          onClick={() => {
-            navigate("/messages");
-          }}
-        >
-          {" "}
-          Messages{" "}
-        </Button>
-      </main>
     </div>
   );
 };

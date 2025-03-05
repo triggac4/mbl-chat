@@ -1,20 +1,14 @@
-
-// Logout user
-export const logout = () => {
-  localStorage.removeItem('user');
-};
-
 // Get current user
-export const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem('user'));
+export const getUserToken = () => {
+  return localStorage.getItem('token');
 };
 
 // Get auth token for API calls
 export const getAuthHeader = () => {
-  const user = getCurrentUser();
+  const token = getUserToken();
   
-  if (user && user.token) {
-    return { Authorization: `Bearer ${user.token}` };
+  if (token) {
+    return { Authorization: `Bearer ${token}` };
   } else {
     return {};
   }
