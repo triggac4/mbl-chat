@@ -8,7 +8,6 @@ const Navbar = () => {
   const { isAuthenticated, username } = useCheckAuth();
   const logout = useLogout();
   const { data, refetch } = useGetUnreadMessageCount();
-  console.log({ data });
   const handleLogout = () => {
     logout();
     navigate("/login");

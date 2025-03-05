@@ -5,7 +5,7 @@ import { MessageComponent } from "./MessageComponent";
 
 const MessageList = () => {
   const { data, isPending } = useGetMessages();
-  console.log({ data, isPending });
+  // console.log({ data, isPending });
   const messagesEndRef = useRef(null);
 
   const messagesData = useMemo(() => {
