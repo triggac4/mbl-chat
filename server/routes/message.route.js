@@ -2,6 +2,7 @@ import {
   createMessage,
   getAllMessages,
   getAllUnreadMessageCount,
+  markMessageAsRead,
 } from "../controller/message.controller.js";
 import { protect } from "../middleware/authMiddleware.js";
 import express from "express";
@@ -79,5 +80,6 @@ router.route("/").post(protect, createMessage).get(protect, getAllMessages);
  *         description: Not authorized
  */
 router.get("/unreadCount", protect, getAllUnreadMessageCount);
+router.get("/markAsRead/:id", protect, markMessageAsRead);
 
 export default router;

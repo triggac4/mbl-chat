@@ -8,6 +8,10 @@ const messageSchema = new mongoose.Schema(
       ref: User.modelName,
       required: true,
     },
+    subject: {
+      type: String,
+      required: true,
+    },
     content: {
       type: String,
       trim: true,
@@ -16,6 +20,10 @@ const messageSchema = new mongoose.Schema(
     receiver: {
       type: mongoose.Schema.Types.ObjectId,
       ref: User.modelName,
+    },
+    isRead: {
+      type: Boolean,
+      default: false,
     },
     forAll: {
       type: Boolean,
