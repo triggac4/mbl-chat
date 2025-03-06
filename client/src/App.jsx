@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { useCheckAuth } from "./hooks/useAuth";
 import "./App.css";
 import MessagesPage from "./pages/MessagesPage";
+import SendMessageForm from "./components/forms/SendMessageForm";
 
 // Create a React Query client
 
@@ -36,6 +37,14 @@ function App() {
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <MessagesPage />
+                </ProtectedRoute>
+              }
+            />
+             <Route
+              path="/sendMessage"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <SendMessageForm />
                 </ProtectedRoute>
               }
             />
