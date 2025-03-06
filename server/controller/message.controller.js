@@ -9,7 +9,7 @@ const createMessage = async (req, res) => {
   const { user } = req;
   const IO = req.app.get("IO");
   let receiver;
-  receiver = await User.findOne({ email });
+  receiver = await User.findOne({ email: `${email}`.toLowerCase() });
 
   if (!receiver) {
     res.status(404);
@@ -77,12 +77,10 @@ const getAllUnreadMessageCount = async (req, res) => {
     receiver: user._id,
   });
   const isUnread = messages.filter((msg) => !msg.isRead);
-  res
-    .status(200)
-    .json({
-      unreadMessageCount: isUnread.length,
-      totalMessageCount: messages.length,
-    });
+  res.status(200).json({
+    unreadMessageCount: isUnread.length,
+    totalMessageCount: messages.length,
+  });
 };
 
 export {

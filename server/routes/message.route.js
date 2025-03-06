@@ -80,6 +80,31 @@ router.route("/").post(protect, createMessage).get(protect, getAllMessages);
  *         description: Not authorized
  */
 router.get("/unreadCount", protect, getAllUnreadMessageCount);
+/**
+ * @swagger
+ * /api/messages/markAsRead/{id}:
+ *   get:
+ *     tags:
+ *       - Messages
+ *     summary: Mark a message as read
+ *     description: Mark a specific message as read for the authenticated user
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the message to mark as read
+ *     responses:
+ *       200:
+ *         description: Message marked as read successfully
+ *       401:
+ *         description: Not authorized
+ *       404:
+ *         description: Message not found
+ */
 router.get("/markAsRead/:id", protect, markMessageAsRead);
 
 export default router;

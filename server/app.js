@@ -23,25 +23,7 @@ const limiter = rateLimit({
   message: "Too many requests, please try again later.",
 });
 
-// Swagger configuration
-const swaggerOptions = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "Messaging App API",
-      version: "1.0.0",
-      description: "API for messaging application",
-    },
-    // servers: [
-    //   {
-    //     url: "http://localhost:5000",
-    //   },
-    // ],
-  },
-  apis: ["./routes/*.js"],
-};
-
-// const swaggerDocs = swaggerJsDoc(swaggerOptions);
+// Swagger configuration is now handled in swagger.js
 
 // Middleware
 app.use(express.json());
@@ -57,8 +39,7 @@ app.use("/api/messages", messageRoutes);
 // Initialize Swagger documentation
 swaggerDocs(app);
 
-// Swagger documentation
-// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+// Swagger documentation is initialized in swaggerDocs(app) above
 
 // Base route
 app.get("/", (req, res) => {

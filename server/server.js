@@ -16,20 +16,20 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "*", // Frontend URL
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     // credentials: true
-  }
+  },
 });
 
 // Socket.io connection handler
 io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
-  
+
   // Disconnect
   socket.on("disconnect", () => {
     console.log(`User disconnected: ${socket.id}`);
   });
-  app.set('IO', io)
+  app.set("IO", io);
 });
 
 // Connect to MongoDB and start server

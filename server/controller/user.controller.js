@@ -5,7 +5,7 @@ import { generateToken } from "../utils/tokenUtil.js";
 
 const registerUser = async (req, res) => {
   const { username, email, password } = req.body;
-const userExists = await User.findOne({ email });
+  const userExists = await User.findOne({ email });
 
   if (userExists) {
     res.status(400);
@@ -36,8 +36,11 @@ const userExists = await User.findOne({ email });
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email }).select("+password");
-
-  const passwordMatch = await user.comparePassword(password);
+  if (!user) {
+    res.status(401);
+    throw new Error("Invalid email or password");
+  }
+  const passwordMatch = await user.comparePassword(password || "");
   //password verify
   if (user && passwordMatch) {
     const token = generateToken(user._id);
