@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaSignOutAlt, FaUserCircle, FaComments } from "react-icons/fa";
 import { useCheckAuth, useLogout } from "../hooks/useAuth";
 import { useGetUnreadMessageCount } from "../hooks/useMessages";
@@ -8,7 +8,6 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { isAuthenticated, username } = useCheckAuth();
   const logout = useLogout();
-  const location = useLocation();
   const { data, refetch } = useGetUnreadMessageCount();
   const handleLogout = () => {
     logout();
@@ -16,18 +15,14 @@ const Navbar = () => {
   };
 
   const onNewMessageCallback = useCallback(() => {
-    const isMessages = location.pathname === "/messages";
-    console.log({ isMessages, location });
-    if (!isMessages) {
-      refetch();
-    }
-  }, [location, refetch]);
+    refetch();
+  }, [refetch]);
   useSocketConnection({
     onNewMessage: onNewMessageCallback,
     dependency: [onNewMessageCallback],
   });
   return (
-    <nav className="bg-white border-b shadow-sm fixed top-0 left-0 right-0 z-50">
+    <nav className="bg-white border-b shadow-sm h-16">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">

@@ -2,7 +2,7 @@ import "react";
 import PropTypes from "prop-types";
 import { useCheckAuth } from "../../hooks/useAuth";
 
-export const MessageComponent = ({ msg = {} }) => {
+export const MessageComponent = ({ msg = {}, onClick }) => {
   const { email } = useCheckAuth();
   const isCurrentUser = msg?.sender?.email === email;
   console.log("isCurrentUser", !isCurrentUser && !msg.isRead);
@@ -14,6 +14,7 @@ export const MessageComponent = ({ msg = {} }) => {
             ? "bg-blue-100 text-gray-800 "
             : "bg-white text-gray-800"
         }`}
+        onClick={() => onClick(msg)}
       >
         {/* sender username*/}
         <p className="text-sm font-semibold pb-2 text-start">
@@ -29,9 +30,7 @@ export const MessageComponent = ({ msg = {} }) => {
             whiteSpace: "nowrap",
           }}
         >
-          <span className="font-semibold">{`${
-            msg?.subject || "N/A"
-          }:  `}</span>
+          <span className="font-semibold">{`${msg?.subject || "N/A"}:  `}</span>
           {`${msg?.content}`}
         </p>
         <p className={`text-xs mt-1 text-end text-gray-400`}>
@@ -58,4 +57,5 @@ MessageComponent.propTypes = {
     content: PropTypes.string,
     createdAt: PropTypes.string,
   }).isRequired,
+  onClick: PropTypes.func.isRequired,
 };

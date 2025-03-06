@@ -10,7 +10,7 @@ const FormContainer = ({
   onSubmit,
 }) => {
   return (
-    <div className="min-h-[calc(100vh-136px)] flex items-center justify-center">
+    <div className="min-h-[100%] flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <div className="text-center mb-8">
           {Icon && <Icon className="mx-auto text-4xl text-blue-600 mb-2" />}

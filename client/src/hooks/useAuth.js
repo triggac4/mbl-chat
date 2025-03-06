@@ -50,12 +50,13 @@ export const useLastView = () => {
 
 // Check if user is authenticated
 export const useCheckAuth = () => {
-  const { token, username, email } = useAuthStore();
+  const { token, username, email,_id } = useAuthStore();
 
   return {
     isAuthenticated: !!token,
     username,
     email,
+    _id
   };
 };
 

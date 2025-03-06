@@ -1,11 +1,19 @@
 import "react";
 import PropTypes from "prop-types";
 import { useCheckAuth } from "../../hooks/useAuth";
+import { useMarkAsRead } from "../../hooks/useMessages";
+import { useEffect } from "react";
 
 export const MessageDetails = ({ msg = {} }) => {
   const { email } = useCheckAuth();
   const isCurrentUser = msg?.sender?.email === email;
   //call markedAsRead
+  const { mutate } = useMarkAsRead();
+  useEffect(() => {
+    if (!isCurrentUser) {
+      mutate({ id: msg._id });
+    }
+  }, [isCurrentUser, msg._id, mutate]);
   return (
     <div className={`flex mx-4 gap-5 flex-1 justify-center items-center`}>
       <div className={`w-full p-3`}>

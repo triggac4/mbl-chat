@@ -3,14 +3,20 @@ import PropTypes from "prop-types";
 import { CircleSpinner } from "../ui/Loading";
 import { MessageComponent } from "./MessageComponent";
 
-const MessageList = ({ messages = [], isLoading }) => {
+const MessageList = ({ messages = [], isLoading, onClick }) => {
   const messagesEndRef = useRef(null);
   const messagesData = useMemo(() => {
     // const messages = data?.messages || [];
     return messages.map((msg, index) => {
-      return <MessageComponent key={`${msg._id} ${index}`} msg={msg} />;
+      return (
+        <MessageComponent
+          key={`${msg._id} ${index}`}
+          msg={msg}
+          onClick={onClick}
+        />
+      );
     });
-  }, [messages]);
+  }, [messages, onClick]);
   // Scroll to bottom of messages when messages update
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -27,6 +33,7 @@ const MessageList = ({ messages = [], isLoading }) => {
 MessageList.propTypes = {
   messages: PropTypes.array.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default MessageList;

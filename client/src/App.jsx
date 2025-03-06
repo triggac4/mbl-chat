@@ -17,9 +17,12 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50">
+      <div className="h-screen bg-gray-50 flex flex-col">
         <Navbar />
-        <div className="container mx-auto md:px-4">
+        <div
+          className="container mx-auto md:px-4 flex-1"
+          style={{ height: "calc(100vh - 4.5rem)" }}
+        >
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
@@ -40,7 +43,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-             <Route
+            <Route
               path="/sendMessage"
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import { FaSignInAlt } from "react-icons/fa";
 // import useAuthStore from "../../store/authStore";
 
@@ -9,9 +10,8 @@ import Button from "../ui/Button";
 import { errorFormatter } from "../../services/formatters";
 import { useSendMessage } from "../../hooks/useMessages";
 import TextArea from "../ui/TextArea";
-import { useNavigate } from "react-router-dom";
 
-const SendMessageForm = () => {
+const SendMessageForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
     message: "",
     subject: "",
@@ -19,7 +19,6 @@ const SendMessageForm = () => {
   });
 
   const { mutateAsync, isPending, error } = useSendMessage();
-  const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -33,7 +32,7 @@ const SendMessageForm = () => {
     try {
       await mutateAsync(formData, {
         onSuccess: () => {
-          navigate("/messages");
+          onClose();
         },
       });
     } catch (error) {
@@ -85,6 +84,9 @@ const SendMessageForm = () => {
       </Button>
     </FormContainer>
   );
+};
+SendMessageForm.propTypes = {
+  onClose: PropTypes.func.isRequired,
 };
 
 export default SendMessageForm;

@@ -11,6 +11,16 @@ export const useSendMessage = () => {
     },
   });
 };
+
+export const useMarkAsRead = () => {
+  // const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id }) => {
+      const response = await api.get(`${url}/markAsRead/${id}`);
+      return response.data;
+    },
+  });
+};
 export const useGetMessages = () => {
   const queryClient = useQueryClient();
 
