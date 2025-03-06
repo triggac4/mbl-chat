@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaUserPlus } from "react-icons/fa";
 import { useRedirectToDashboard, useRegister } from "../../hooks/useAuth";
 import useAuthStore from "../../store/authStore";
@@ -17,7 +17,7 @@ const RegisterForm = () => {
     password: "",
     confirmPassword: "",
   });
-
+const navigate = useNavigate();
   const [passwordError, setPasswordError] = useState("");
   // useRedirectToDashboard();
 
@@ -49,7 +49,7 @@ const RegisterForm = () => {
       // Remove confirmPassword before sending to server
       // const { confirmPassword, ...userData } = formData;
       await mutateAsync(formData);
-      // navigate("/");
+      navigate("/");
     } catch (error) {
       console.error("Registration failed:", error);
     }
