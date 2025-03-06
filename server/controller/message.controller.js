@@ -41,7 +41,7 @@ const getAllMessages = async (req, res) => {
 
   const messages = await Message.find({
     $or: [{ receiver: user._id }, { sender: user._id }],
-  }).populate("sender");
+  }).sort({ createdAt: -1 }).populate("sender");
   await User.findByIdAndUpdate(user._id, { lastMessagesView: Date.now() });
   res.status(200).json({ messages });
 };
@@ -59,7 +59,7 @@ const markMessageAsRead = async (req, res) => {
     {
       new: true,
     }
-  ).sort({ createdAt: -1 });
+  );
   if (!messages) {
     res.status(404);
     throw new Error("Message not found");
