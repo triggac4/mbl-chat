@@ -19,7 +19,7 @@ const RegisterForm = () => {
   });
 
   const [passwordError, setPasswordError] = useState("");
-  useRedirectToDashboard();
+  // useRedirectToDashboard();
 
   const { mutateAsync, isPending, error } = useRegister();
   // const error = useAuthStore((state) => state.error);

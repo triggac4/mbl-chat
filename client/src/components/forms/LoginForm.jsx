@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaSignInAlt } from "react-icons/fa";
 import { useRedirectToDashboard, useSignIn } from "../../hooks/useAuth";
 // import useAuthStore from "../../store/authStore";
@@ -15,8 +15,9 @@ const LoginForm = () => {
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
-  useRedirectToDashboard();
+  // useRedirectToDashboard();
   const { mutateAsync, isPending, error } = useSignIn();
 
   const handleChange = (e) => {
@@ -31,6 +32,7 @@ const LoginForm = () => {
 
     try {
       await mutateAsync(formData);
+      navigate("/");
     } catch (error) {
       console.error("Login failed:", error);
     }
