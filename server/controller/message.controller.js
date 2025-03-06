@@ -9,7 +9,7 @@ const createMessage = async (req, res) => {
   const { user } = req;
   const IO = req.app.get("IO");
   let receiver;
-  receiver = await User.findOne({ email: `${email}`.toLowerCase() });
+  receiver = await User.findOne({ email: `${email}`.toLowerCase().trim() });
 
   if (!receiver) {
     res.status(404);
@@ -59,7 +59,7 @@ const markMessageAsRead = async (req, res) => {
     {
       new: true,
     }
-  );
+  ).sort({ createdAt: -1 });
   if (!messages) {
     res.status(404);
     throw new Error("Message not found");
