@@ -52,7 +52,7 @@ const SendMessageForm = ({ onClose }) => {
         id="subject"
         name="subject"
         type="text"
-        label="Email Subject"
+        label="Subject"
         value={formData.subject}
         onChange={handleChange}
         placeholder="Enter The Subject Of This Email"

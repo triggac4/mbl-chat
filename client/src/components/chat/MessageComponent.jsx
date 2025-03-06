@@ -8,19 +8,28 @@ export const MessageComponent = ({ msg = {}, onClick }) => {
   console.log("isCurrentUser", !isCurrentUser && !msg.isRead);
   return (
     //increase size on hover and animate
-    <div className={`flex mx-2 cursor-pointer hover:scale-102 transition-transform`}>
+    <div
+      className={`flex mx-2 cursor-pointer hover:scale-102 transition-transform border-b-2 border-gray-300`}
+    >
       <button
-        className={`w-full p-2  ${
-          !isCurrentUser && !msg.isRead
-            ? "bg-blue-100 text-gray-800 "
-            : "bg-white text-gray-800"
+        className={`w-full p-2 text-gray-800 ${
+          isCurrentUser
+            ? "bg-transparent "
+            : !isCurrentUser && !msg.isRead
+            ? "bg-blue-100 "
+            : "bg-white "
         }`}
         onClick={() => onClick(msg)}
       >
-        {/* sender username*/}
-        <p className="text-sm font-semibold pb-2 text-start">
-          {`${isCurrentUser ? "You" : msg?.sender?.username || "N/A"}`}
-        </p>
+        <div className="flex justify-between">
+          {/* sender username*/}
+          <p className="text-sm font-semibold pb-2 text-start">
+            {`${isCurrentUser ? "You" : msg?.sender?.username || "N/A"}`}
+          </p>
+          <p className="text-sm">
+            {`${!isCurrentUser ? "" : msg?.isRead ? "Read" : "Unread"}`}
+          </p>
+        </div>
         {/* message content  should have not more than 200px use eclipise*/}
         <p
           className="text-sm text-left"
