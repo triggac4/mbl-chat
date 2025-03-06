@@ -7,7 +7,8 @@ export const MessageComponent = ({ msg = {}, onClick }) => {
   const isCurrentUser = msg?.sender?.email === email;
   console.log("isCurrentUser", !isCurrentUser && !msg.isRead);
   return (
-    <div className={`flex mx-2 cursor-pointer`}>
+    //increase size on hover and animate
+    <div className={`flex mx-2 cursor-pointer hover:scale-102 transition-transform`}>
       <button
         className={`w-full p-2  ${
           !isCurrentUser && !msg.isRead

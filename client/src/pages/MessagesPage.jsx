@@ -45,7 +45,9 @@ const MessagesPage = () => {
   return (
     <div className="flex flex-col bg-gray-100 mb-3 h-full">
       <header className="bg-white shadow p-4">
-        <h1 className="text-xl font-semibold text-gray-800">Messages</h1>
+        <h1 className="text-xl font-semibold text-gray-800">
+          Messages: click to mark as read and view details
+        </h1>
       </header>
 
       <div className="flex flex-col flex-1 overflow-hidden ">
